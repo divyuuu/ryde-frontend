@@ -1,0 +1,24 @@
+.cta{
+  padding:80px 0;
+}
+
+.cta-inner{
+  background:var(--accent-dim);
+  padding:60px;
+  text-align:center;
+  border-radius:var(--radius);
+}
+
+.cta button{
+  margin-top:20px;
+  background:var(--accent);
+  padding:14px 30px;
+  border-radius:var(--radius);
+}
+
+@media (max-width:768px){
+
+.cta{
+  padding:24px 0;
+}
+}

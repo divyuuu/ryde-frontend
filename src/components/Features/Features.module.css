@@ -1,0 +1,37 @@
+.features{
+  padding:50px 89px;
+}
+
+.features h2{
+  text-align:center;
+  font-family:var(--font-display);
+  margin-bottom:60px;
+}
+
+.featureGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.featureCard{
+  background:var(--bg-panel);
+  padding:30px;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+}
+
+.featureCard p{
+  color:var(--text-secondary);
+  margin-top:10px;
+}
+@media (max-width:768px){
+
+  .features{
+    padding:50px 24px;
+  }
+  .featureGrid{
+    grid-template-columns:1fr;
+  }
+
+}
