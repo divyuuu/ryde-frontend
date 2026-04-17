@@ -71,6 +71,7 @@
 .login{
   background:transparent;
   color:var(--text-primary);
+  border-radius:var(--radius-sm);
 }
 
 .signup{
