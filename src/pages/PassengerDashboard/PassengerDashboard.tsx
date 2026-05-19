@@ -1,5 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./PassengerDashboard.module.css";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const rideOptions = [
   { id: "ryde", label: "Ryde", description: "Reliable everyday ride" },
@@ -12,6 +14,14 @@ const savedPlaces = [
   { label: "Work", address: "220 Trade Street, Austin" },
   { label: "Airport", address: "AUS Airport, Terminal 2" },
 ];
+
+type userData = {
+  uuid: string;
+  name: string;
+  totalRides: number;
+  rating: number;
+  email: string;
+}
 
 const PassengerDashboard: React.FC = () => {
   const [pickup, setPickup] = useState("Current location");
@@ -28,6 +38,8 @@ const PassengerDashboard: React.FC = () => {
   const routeTime = routeReady ? "14 min" : "—";
   const routePrice = routeReady ? "$10.20" : "—";
   const rideOption = rideOptions.find((option) => option.id === selectedOption) ?? rideOptions[0];
+  const uuid = useParams().uuid;
+  const [user, setUser] = useState<userData | null>(null);
 
   const handleBook = (event: React.FormEvent) => {
     event.preventDefault();
@@ -39,6 +51,25 @@ const PassengerDashboard: React.FC = () => {
     setDestination(address);
     setMessage("");
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8080/user/${uuid}`);
+        if(res.status !== 200) {
+          console.error("Failed to fetch user data");
+          return;
+        }
+        const userData: userData = res.data;
+        setUser(userData);
+
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    getUser();
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -53,7 +84,7 @@ const PassengerDashboard: React.FC = () => {
             </div>
           </div>
           <div className={styles.profileCard}>
-            <p className={styles.profileName}>Hello, Riley</p>
+            <p className={styles.profileName}>Hello, {user?.name || "Guest"}</p>
             <p className={styles.profileMeta}>Plan your next ride instantly.</p>
           </div>
         </header>

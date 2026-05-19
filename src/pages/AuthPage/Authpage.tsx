@@ -199,7 +199,7 @@ const AuthPage: React.FC = () => {
       const res = await axios.post("http://localhost:8080/api/auth/login", login);
       if (res.status === 200 || res.status === 201) {
         toast.success("Logged in successfully.");
-        setTimeout(() => navigate("/"), 1200);
+        navigate(`/dashboard/${res.data.success.uuid}`);
       } else {
         toast.error("Unable to sign in. Please check your credentials.");
       }
@@ -293,7 +293,7 @@ const AuthPage: React.FC = () => {
               role="tab"
               aria-selected={tab === "login"}
               className={`${styles.tabBtn} ${tab === "login" ? styles.active : ""}`}
-              onClick={() => switchTab("login")}
+              onClick={handleLogin}
             >
               Sign In
             </button>

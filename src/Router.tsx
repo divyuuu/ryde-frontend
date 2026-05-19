@@ -18,7 +18,7 @@ const Router = () => {
         <Route path="/auth" element={<AuthPage />} />
 
         {/* Passenger Dashboard */}
-        <Route path="/dashboard" element={<PassengerDashboard />} />
+        <Route path="/dashboard/:uuid" element={<PassengerDashboard />} />
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
