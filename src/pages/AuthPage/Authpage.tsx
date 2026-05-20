@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import API from "../../api/api";
 
 /* ─── Types ───────────────────────────────────────────────── */
 type Tab = "login" | "signup";
@@ -196,10 +197,11 @@ const AuthPage: React.FC = () => {
     if (Object.keys(errs).length) return;
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/login", login);
+      const res = await API.post("/auth/login", login);
       if (res.status === 200 || res.status === 201) {
         toast.success("Logged in successfully.");
-        navigate(`/dashboard/${res.data.success.uuid}`);
+        localStorage.setItem("token", res.data.token);
+        navigate(`/dashboard/${res.data.user.uuid}`);
       } else {
         toast.error("Unable to sign in. Please check your credentials.");
       }
@@ -218,7 +220,7 @@ const AuthPage: React.FC = () => {
     if (Object.keys(errs).length) return;
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/signup", signup);
+      const res = await API.post("/auth/signup", signup);
       if (res.status === 200 || res.status === 201) {
         toast.success("Account created successfully.");
         setSignup({ name: "", email: "", password: "", confirmPassword: "", role: "PASSENGER" });
