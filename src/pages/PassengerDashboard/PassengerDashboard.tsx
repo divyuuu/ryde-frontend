@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import styles from "./PassengerDashboard.module.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import API from "../../api/api";
 
 const rideOptions = [
   { id: "ryde", label: "Ryde", description: "Reliable everyday ride" },
@@ -55,14 +56,13 @@ const PassengerDashboard: React.FC = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/user/${uuid}`);
+        const res = await API.get(`/users/${uuid}`);
         if(res.status !== 200) {
           console.error("Failed to fetch user data");
           return;
         }
-        const userData: userData = res.data;
+        const userData: userData = res.data.success;
         setUser(userData);
-
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
