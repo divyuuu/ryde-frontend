@@ -17,75 +17,59 @@ const IconPin = () => (
 );
 
 export default function Navbar() {
-
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const goAuth = () => {
+    setMenuOpen(false);
+    navigate("/auth");
+  };
+
   return (
     <nav className={styles.navbar}>
-      <div className={`container ${styles.navInner}`}>
-
-        {/* Brand */}
-        <div
-          className={styles.brand}
-          onClick={() => navigate("/")}
-        >
+      <div className={styles.navInner}>
+        <div className={styles.brand} onClick={() => navigate("/")}>
           <div className={styles.logoMark}>
             <IconPin />
           </div>
-
-          <span className={styles.brandName}>
-            Ryde
-          </span>
+          <span className={styles.brandName}>Ryde</span>
         </div>
 
-        {/* Desktop Links */}
         <div className={`${styles.navLinks} ${menuOpen ? styles.showMenu : ""}`}>
-          <a href="#">Home</a>
-          <a href="#">Features</a>
-          <a href="#">How it works</a>
-          <a href="#">Contact</a>
+          <a href="#top" onClick={() => setMenuOpen(false)}>Home</a>
+          <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
+          <a href="#cta" onClick={() => setMenuOpen(false)}>Get started</a>
 
           <div className={styles.mobileActions}>
-            <button
-  onClick={() => {
-    setMenuOpen(false);
-    navigate("/auth");
-  }}
->
-  Login
-</button>
-            <button onClick={() => navigate("/auth")}>Sign Up</button>
+            <button type="button" className={styles.login} onClick={goAuth}>
+              Login
+            </button>
+            <button type="button" className={styles.signup} onClick={goAuth}>
+              Sign Up
+            </button>
           </div>
         </div>
 
-        {/* Desktop Buttons */}
         <div className={styles.navActions}>
-          <button
-            className={styles.login}
-            onClick={() => navigate("/auth")}
-          >
+          <button type="button" className={styles.login} onClick={goAuth}>
             Login
           </button>
-
-          <button
-            className={styles.signup}
-            onClick={() => navigate("/auth")}
-          >
+          <button type="button" className={styles.signup} onClick={goAuth}>
             Sign Up
           </button>
         </div>
 
-        {/* Hamburger */}
-        <div
+        <button
+          type="button"
           className={styles.hamburger}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
     </nav>
   );

@@ -295,7 +295,7 @@ const AuthPage: React.FC = () => {
               role="tab"
               aria-selected={tab === "login"}
               className={`${styles.tabBtn} ${tab === "login" ? styles.active : ""}`}
-              onClick={handleLogin}
+              onClick={() => switchTab("login")}
             >
               Sign In
             </button>

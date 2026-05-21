@@ -1,0 +1,45 @@
+.cta {
+  padding: 0 var(--page-padding-x) 80px;
+}
+
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--accent-dim);
+  border: 1px solid var(--border);
+  padding: 48px 32px;
+  text-align: center;
+  border-radius: var(--radius);
+}
+
+.inner h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+  letter-spacing: -0.5px;
+}
+
+.inner p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin: 0 0 24px;
+  line-height: 1.6;
+}
+
+.inner button {
+  background: var(--accent);
+  color: var(--bg-base);
+  padding: 13px 28px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  transition: var(--transition);
+}
+
+.inner button:hover {
+  filter: brightness(1.05);
+}

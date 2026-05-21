@@ -7,17 +7,16 @@ import styles from "./LandingPage.module.css";
 
 export default function Landing() {
   return (
-    <div className={styles.page}>
+    <div id="top" className={styles.page}>
+      <div className={styles.mapGrid} aria-hidden="true" />
 
-      <div className={styles.mapGrid}></div>
-
-      {/* Content */}
-      <Navbar />
-      <Hero />
-      <Features />
-      <CTA />
-      <Footer />
-
+      <div className={styles.content}>
+        <Navbar />
+        <Hero />
+        <Features />
+        <CTA />
+        <Footer />
+      </div>
     </div>
   );
 }
