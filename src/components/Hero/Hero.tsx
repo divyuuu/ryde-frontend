@@ -1,46 +1,81 @@
+import { useNavigate } from "react-router-dom";
 import styles from "./Hero.module.css";
 
+const STATS = [
+  { value: "2.4M", label: "Active riders" },
+  { value: "98%", label: "On-time rate" },
+  { value: "4.9★", label: "Avg. rating" },
+];
+
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className={styles.hero}>
-      <div className={`container ${styles.heroInner}`}>
+      <div className={styles.split}>
+        <div className={styles.leftPanel}>
+          <div className={styles.panelGlow} aria-hidden="true" />
 
-        <div className={styles.heroText}>
+          <p className={styles.eyebrow}>City rides, simplified</p>
 
-          <h1>
-            Move smarter with <span>Ryde</span>
+          <h1 className={styles.title}>
+            Move smarter with <em>Ryde</em>
           </h1>
 
-          <p>
-            Book rides instantly, share trips, and travel across the city
-            with premium and reliable rides.
+          <p className={styles.subtitle}>
+            Book rides instantly, share trips, and travel across the city with
+            premium, reliable service.
           </p>
 
           <div className={styles.heroButtons}>
-            <button className={styles.primary}>
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={() => navigate("/auth")}
+            >
               Book a Ride
             </button>
-
-            <button className={styles.secondary}>
+            <button
+              type="button"
+              className={styles.secondary}
+              onClick={() => navigate("/auth")}
+            >
               Become a Driver
             </button>
           </div>
 
+          <div className={styles.stats}>
+            {STATS.map((s) => (
+              <div className={styles.stat} key={s.label}>
+                <span className={styles.statValue}>{s.value}</span>
+                <span className={styles.statLabel}>{s.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className={styles.heroCard}>
+        <div className={styles.rightPanel}>
+          <div className={styles.heroCard}>
+            <h3 className={styles.cardTitle}>Book your ride</h3>
+            <p className={styles.cardHint}>
+              Sign in to match with nearby drivers in seconds.
+            </p>
 
-          <h3>Book your ride</h3>
+            <label className={styles.fieldLabel}>Pickup</label>
+            <input placeholder="Pickup location" readOnly />
 
-          <input placeholder="Pickup location" />
-          <input placeholder="Drop location" />
+            <label className={styles.fieldLabel}>Drop-off</label>
+            <input placeholder="Drop location" readOnly />
 
-          <button className={styles.rideBtn}>
-            Find Ride
-          </button>
-
+            <button
+              type="button"
+              className={styles.rideBtn}
+              onClick={() => navigate("/auth")}
+            >
+              Find Ride
+            </button>
+          </div>
         </div>
-
       </div>
     </section>
   );

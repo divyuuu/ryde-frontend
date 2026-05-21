@@ -1,99 +1,256 @@
-.hero{
-  padding:50px 89px 0;
+.hero {
+  padding: 0 var(--page-padding-x) 48px;
 }
 
-.heroInner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:60px;
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 72px);
+  max-height: 900px;
 }
 
-.heroText h1{
-  font-family:var(--font-display);
-  font-size:56px;
-  line-height:1.1;
-}
-
-.heroText span{
-  color:var(--accent);
-}
-
-.heroText p{
-  margin-top:20px;
-  color:var(--text-secondary);
-  max-width:500px;
-}
-
-.heroButtons{
-  margin-top:30px;
-  display:flex;
-  gap:16px;
-  cursor: pointer;
-}
-
-.primary{
-  background:var(--accent);
-  color:black;
-  padding:14px 26px;
-  border-radius:var(--radius);
-  font-weight:600;
-}
-
-.secondary{
-  background:var(--bg-surface);
-  color:var(--text-primary);
-  padding:14px 26px;
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-}
-
-.heroCard{
-  background:var(--bg-panel);
-  padding:28px;
-  border-radius:var(--radius);
-  width:320px;
-  border:1px solid var(--border);
-}
-
-.heroCard input{
-  width:92%;
-  margin-top:12px;
-  padding:12px;
-  background:var(--bg-surface);
-  border:none;
-  color:white;
-  border-radius:var(--radius-sm);
-}
-
-.rideBtn{
-  margin-top:16px;
-  width:100%;
-  background:var(--accent);
-  padding:12px;
-  border-radius:var(--radius-sm);
-  cursor: pointer;
-}
-@media (max-width:768px){
-
-  .hero{
-    padding:40px 24px 0;
-  }
-
-  .heroInner{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:40px;
-    align-items: center;
-  }
-
-  .heroText h1{
-    font-size:36px;
-  }
-
-.heroButtons{
+.leftPanel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  padding: 48px 48px 48px 0;
+  overflow: hidden;
 }
 
+.panelGlow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(79, 255, 176, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(100, 160, 255, 0.06) 0%, transparent 55%);
+  pointer-events: none;
+}
 
+.eyebrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 24px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  color: var(--text-primary);
+  margin: 0 0 20px;
+  text-align: left;
+}
+
+.title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.subtitle {
+  position: relative;
+  z-index: 1;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin: 0 0 32px;
+  text-align: left;
+}
+
+.heroButtons {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--bg-base);
+  padding: 13px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  transition: var(--transition);
+}
+
+.primary:hover {
+  filter: brightness(1.05);
+}
+
+.secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 13px 24px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.secondary:hover {
+  border-color: var(--border-active);
+  background: var(--bg-hover);
+}
+
+.stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.rightPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0 48px 24px;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border);
+  margin-right: calc(-1 * var(--page-padding-x));
+  padding-right: var(--page-padding-x);
+}
+
+.heroCard {
+  width: 100%;
+  max-width: 380px;
+  background: var(--bg-surface);
+  padding: 32px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+
+.cardHint {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 7px;
+  letter-spacing: 0.3px;
+}
+
+.fieldLabel:not(:first-of-type) {
+  margin-top: 14px;
+}
+
+.heroCard input {
+  width: 100%;
+  padding: 11px 13px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.heroCard input::placeholder {
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+.rideBtn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 13px;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--bg-base);
+  letter-spacing: 0.3px;
+  transition: var(--transition);
+}
+
+.rideBtn:hover {
+  filter: brightness(1.05);
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    max-height: none;
+  }
+
+  .leftPanel {
+    padding: 32px 0 24px;
+  }
+
+  .rightPanel {
+    margin-right: 0;
+    padding: 32px 0 40px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
+
+  .stats {
+    gap: 24px;
+  }
 }

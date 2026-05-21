@@ -1,19 +1,18 @@
-import "./CallToAction.css";
+import { useNavigate } from "react-router-dom";
+import styles from "./CallToAction.module.css";
 
-export default function CTA(){
+export default function CTA() {
+  const navigate = useNavigate();
+
   return (
-    <section className="cta">
-
-      <div className="container cta-inner">
-
+    <section id="cta" className={styles.cta}>
+      <div className={styles.inner}>
         <h2>Ready to start your ride?</h2>
-
-        <button>
-          Download App
+        <p>Create an account and book your first trip in minutes.</p>
+        <button type="button" onClick={() => navigate("/auth")}>
+          Get Started
         </button>
-
       </div>
-
     </section>
-  )
+  );
 }
