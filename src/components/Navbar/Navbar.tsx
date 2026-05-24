@@ -20,9 +20,14 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const goAuth = () => {
+  const goLogin = () => {
     setMenuOpen(false);
-    navigate("/auth");
+    navigate("/auth?tab=login");
+  };
+
+  const goSignup = () => {
+    setMenuOpen(false);
+    navigate("/auth?tab=signup");
   };
 
   return (
@@ -41,20 +46,20 @@ export default function Navbar() {
           <a href="#cta" onClick={() => setMenuOpen(false)}>Get started</a>
 
           <div className={styles.mobileActions}>
-            <button type="button" className={styles.login} onClick={goAuth}>
+            <button type="button" className={styles.login} onClick={goLogin}>
               Login
             </button>
-            <button type="button" className={styles.signup} onClick={goAuth}>
+            <button type="button" className={styles.signup} onClick={goSignup}>
               Sign Up
             </button>
           </div>
         </div>
 
         <div className={styles.navActions}>
-          <button type="button" className={styles.login} onClick={goAuth}>
+          <button type="button" className={styles.login} onClick={goLogin}>
             Login
           </button>
-          <button type="button" className={styles.signup} onClick={goAuth}>
+          <button type="button" className={styles.signup} onClick={goSignup}>
             Sign Up
           </button>
         </div>
