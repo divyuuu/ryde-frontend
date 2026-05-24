@@ -1,8 +1,7 @@
 // AuthPage.tsx
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styles from "./Authpage.module.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import API from "../../api/api";
@@ -170,7 +169,9 @@ const InputField: React.FC<InputFieldProps> = ({
 
 /* ─── Main Component ─────────────────────────────────────── */
 const AuthPage: React.FC = () => {
-  const [tab, setTab] = useState<Tab>("login");
+  const location = useLocation();
+  const initialTab = new URLSearchParams(location.search).get("tab") === "signup" ? "signup" : "login";
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [loading, setLoading] = useState(false);
 
   /* Login state */
@@ -242,6 +243,11 @@ const AuthPage: React.FC = () => {
     setLoginErrors({});
     setSignupErrors({});
   };
+
+  useEffect(() => {
+    const nextTab = new URLSearchParams(location.search).get("tab") === "signup" ? "signup" : "login";
+    if (nextTab !== tab) switchTab(nextTab);
+  }, [location.search, tab]);
 
   const navigate = useNavigate();
 
