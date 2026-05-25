@@ -1,73 +1,121 @@
-# React + TypeScript + Vite
+# Ryde Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Web client for **Ryde** — landing page, authentication, and passenger ride booking. Built with React and Vite; connects to the [Ryde Backend](https://github.com/divyuuu/ryde-backend) API.
 
-Currently, two official plugins are available:
+## Preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![Ryde landing page](docs/screenshots/landing_page_1.png)
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| | |
+|---|---|
+| UI | React 19, TypeScript |
+| Build | Vite 8 |
+| Routing | React Router 7 |
+| HTTP | Axios |
+| Maps (planned) | Leaflet, react-leaflet |
+| Feedback | react-toastify |
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Landing page** — hero, features, call-to-action, footer
+- **Auth** — login and signup with validation; driver or passenger role on signup
+- **Passenger dashboard** — pickup/destination, ride tiers, saved places; profile from API
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+> **Status:** Auth and dashboard UI talk to the backend. Map integration and live ride booking API calls are planned.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Node.js** 20+ (LTS recommended)
+- **npm**
+- **[ryde-backend](https://github.com/divyuuu/ryde-backend)** running at `http://localhost:8080` (see that repo’s README for PostgreSQL and env vars)
+
+## Run locally
+
+```bash
+git clone https://github.com/divyuuu/ryde-frontend.git
+cd ryde-frontend
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open **http://localhost:5173**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Script | Command | Purpose |
+|--------|---------|---------|
+| Dev server | `npm run dev` | Hot reload development |
+| Production build | `npm run build` | Typecheck + bundle to `dist/` |
+| Preview build | `npm run preview` | Serve production build locally |
+| Lint | `npm run lint` | ESLint |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Order:** start the backend first, then run `npm run dev` here.
+
+## Configuration
+
+The API client uses the backend URL by default:
+
+```ts
+// src/api/api.ts
+baseURL: "http://localhost:8080/api"
 ```
+
+JWT is stored in `localStorage` as `token` and sent as `Authorization: Bearer …` on each request.
+
+For a custom API URL, add `.env` (do not commit secrets):
+
+```env
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+## Routes
+
+| Path | Page |
+|------|------|
+| `/` | Landing |
+| `/auth?tab=login` | Login |
+| `/auth?tab=signup` | Sign up |
+| `/dashboard/:uuid` | Passenger dashboard (after login) |
+
+## Screenshots
+
+| Landing (hero) | Landing (features) |
+|----------------|-------------------|
+| ![Landing hero](docs/screenshots/landing_page_1.png) | ![Landing features](docs/screenshots/landing_page_2.png) |
+
+| Sign in | Create account |
+|---------|----------------|
+| ![Sign in](docs/screenshots/sign_in.png) | ![Create account](docs/screenshots/create_account.png) |
+
+| Passenger dashboard |
+|---------------------|
+| ![Passenger dashboard](docs/screenshots/passenger_dashboard.png) |
+
+## Project structure
+
+```
+ryde-frontend/
+├── docs/screenshots/              # README screenshots
+├── public/
+├── src/
+│   ├── api/
+│   ├── components/
+│   ├── pages/
+│   ├── styles/
+│   ├── types/
+│   ├── Router.tsx
+│   └── main.tsx
+├── package.json
+└── README.md
+```
+
+## Related repository
+
+| Repo | Link |
+|------|------|
+| **ryde-frontend** (this repo) | https://github.com/divyuuu/ryde-frontend |
+| **ryde-backend** | https://github.com/divyuuu/ryde-backend |
+
+## License
+
+Add your license here (e.g. MIT) if you open-source the project.
