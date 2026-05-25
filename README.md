@@ -118,4 +118,4 @@ ryde-frontend/
 
 ## License
 
-Add your license here (e.g. MIT) if you open-source the project.
+All rights owned by @divyuuu
