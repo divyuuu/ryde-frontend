@@ -202,7 +202,13 @@ const AuthPage: React.FC = () => {
       if (res.status === 200 || res.status === 201) {
         toast.success("Logged in successfully.");
         localStorage.setItem("token", res.data.token);
-        navigate(`/dashboard/${res.data.user.uuid}`);
+        const userUuid = res.data.user.uuid;
+        const role = res.data.user.role;
+        if (role === "DRIVER") {
+          navigate(`/driver-dashboard/${userUuid}`);
+        } else {
+          navigate(`/dashboard/${userUuid}`);
+        }
       } else {
         toast.error("Unable to sign in. Please check your credentials.");
       }
