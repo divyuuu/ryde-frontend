@@ -22,6 +22,7 @@ Web client for **Ryde** — landing page, authentication, and passenger ride boo
 - **Landing page** — hero, features, call-to-action, footer
 - **Auth** — login and signup with validation; driver or passenger role on signup
 - **Passenger dashboard** — pickup/destination, ride tiers, saved places; profile from API
+- **Driver dashboard** — online/offline toggle, ride requests, earnings stats; profile from API
 
 > **Status:** Auth and dashboard UI talk to the backend. Map integration and live ride booking API calls are planned.
 
@@ -76,6 +77,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 | `/auth?tab=login` | Login |
 | `/auth?tab=signup` | Sign up |
 | `/dashboard/:uuid` | Passenger dashboard (after login) |
+| `/driver-dashboard/:uuid` | Driver dashboard (after login) |
 
 ## Screenshots
 

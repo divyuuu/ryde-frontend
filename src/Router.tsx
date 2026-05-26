@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage/Authpage";
 import Landing from "./pages/LandingPage/LandingPage";
 import PassengerDashboard from "./pages/PassengerDashboard/PassengerDashboard";
+import DriverDashboard from "./pages/DriverDashboard/DriverDashboard";
 
 const Router = () => {
   return (
@@ -19,6 +20,9 @@ const Router = () => {
 
         {/* Passenger Dashboard */}
         <Route path="/dashboard/:uuid" element={<PassengerDashboard />} />
+
+        {/* Driver Dashboard */}
+        <Route path="/driver-dashboard/:uuid" element={<DriverDashboard />} />
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
