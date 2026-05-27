@@ -253,7 +253,7 @@ const AuthPage: React.FC = () => {
   useEffect(() => {
     const nextTab = new URLSearchParams(location.search).get("tab") === "signup" ? "signup" : "login";
     if (nextTab !== tab) switchTab(nextTab);
-  }, [location.search, tab]);
+  }, [location.search]);
 
   const navigate = useNavigate();
 
