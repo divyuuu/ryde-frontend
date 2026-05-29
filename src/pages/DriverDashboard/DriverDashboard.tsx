@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "./DriverDashboard.module.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import API from "../../api/api";
 
 type UserData = {
@@ -21,6 +21,15 @@ type RideRequest = {
   distance: string;
   eta: string;
 };
+
+type VehicleRecord = {
+  id: string;
+  brand: string;
+  model: string;
+  costPerKm: number;
+};
+
+const getVehicleStorageKey = (uuid?: string) => `driverVehicles_${uuid ?? "driver"}`;
 
 const incomingRides: RideRequest[] = [
   {
@@ -45,10 +54,14 @@ const incomingRides: RideRequest[] = [
 
 const DriverDashboard: React.FC = () => {
   const { uuid } = useParams();
+  const navigate = useNavigate();
   const [user, setUser] = useState<UserData | null>(null);
   const [isOnline, setIsOnline] = useState(false);
   const [activeRequestId, setActiveRequestId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [vehicles, setVehicles] = useState<VehicleRecord[]>([]);
+  const [showVehicleForm, setShowVehicleForm] = useState(false);
+  const [vehicleForm, setVehicleForm] = useState({ brand: "", model: "", costPerKm: "" });
 
   const pendingRides = useMemo(
     () => incomingRides.filter((ride) => ride.id !== activeRequestId),
@@ -100,7 +113,58 @@ const DriverDashboard: React.FC = () => {
     };
 
     getUser();
+
+    try {
+      const raw = localStorage.getItem(getVehicleStorageKey(uuid));
+      if (raw) {
+        const parsed = JSON.parse(raw) as VehicleRecord[];
+        setVehicles(Array.isArray(parsed) ? parsed : []);
+      }
+    } catch (error) {
+      console.error("Error loading vehicles:", error);
+    }
   }, [uuid]);
+
+  const handleVehicleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const brand = vehicleForm.brand.trim();
+    const model = vehicleForm.model.trim();
+    const costPerKm = Number(vehicleForm.costPerKm);
+
+    if (!brand || !model || Number.isNaN(costPerKm) || costPerKm <= 0) {
+      setMessage("Please enter a valid brand, model, and cost per km.");
+      return;
+    }
+
+    try {
+      const response = await API.post("/car", {
+        brand,
+        model,
+        costPerKm,
+        driverId: uuid,
+      });
+
+      if (response.status >= 200 && response.status < 300) {
+        const nextVehicle: VehicleRecord = {
+          id: response.data?.id ?? `${brand}-${Date.now()}`,
+          brand,
+          model,
+          costPerKm,
+        };
+
+        const nextVehicles = [nextVehicle, ...vehicles];
+        localStorage.setItem(getVehicleStorageKey(uuid), JSON.stringify(nextVehicles));
+        setVehicles(nextVehicles);
+        setVehicleForm({ brand: "", model: "", costPerKm: "" });
+        setShowVehicleForm(false);
+        setMessage(`${brand} ${model} has been added to your registered vehicles.`);
+      }
+    } catch (error) {
+      console.error("Error adding vehicle:", error);
+      setMessage("Unable to save vehicle right now. Please try again.");
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -266,9 +330,73 @@ const DriverDashboard: React.FC = () => {
             </div>
 
             <div className={styles.vehicleCard}>
-              <p className={styles.summaryLabel}>Vehicle</p>
-              <h3 className={styles.vehicleTitle}>Toyota Camry · ABC-1234</h3>
-              <p className={styles.summaryText}>License verified · Insurance active</p>
+              <div className={styles.vehicleCardHeader}>
+                <div>
+                  <p className={styles.summaryLabel}>Registered vehicles</p>
+                  <h3 className={styles.vehicleTitle}>
+                    {vehicles.length > 0
+                      ? `${vehicles[0].brand} ${vehicles[0].model}`
+                      : "No vehicle added yet"}
+                  </h3>
+                </div>
+                <span className={styles.vehicleCountBadge}>{vehicles.length}</span>
+              </div>
+              <p className={styles.summaryText}>
+                {vehicles.length > 0
+                  ? `Cost per km: $${vehicles[0].costPerKm.toFixed(2)}`
+                  : "Add your first vehicle to begin managing your fleet."}
+              </p>
+              <div className={styles.vehicleActions}>
+                <button
+                  type="button"
+                  className={styles.secondaryButton}
+                  onClick={() => setShowVehicleForm((prev) => !prev)}
+                >
+                  {showVehicleForm ? "Close form" : "Add vehicle"}
+                </button>
+                <button
+                  type="button"
+                  className={styles.secondaryButton}
+                  onClick={() => navigate(`/driver-vehicles/${uuid}`)}
+                >
+                  View all vehicles
+                </button>
+              </div>
+
+              {showVehicleForm && (
+                <form className={styles.vehicleForm} onSubmit={handleVehicleSubmit}>
+                  <label className={styles.field}>
+                    <span>Brand</span>
+                    <input
+                      type="text"
+                      value={vehicleForm.brand}
+                      onChange={(event) => setVehicleForm((prev) => ({ ...prev, brand: event.target.value }))}
+                      placeholder="Toyota"
+                    />
+                  </label>
+                  <label className={styles.field}>
+                    <span>Model</span>
+                    <input
+                      type="text"
+                      value={vehicleForm.model}
+                      onChange={(event) => setVehicleForm((prev) => ({ ...prev, model: event.target.value }))}
+                      placeholder="Camry"
+                    />
+                  </label>
+                  <label className={styles.field}>
+                    <span>Cost per km</span>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={vehicleForm.costPerKm}
+                      onChange={(event) => setVehicleForm((prev) => ({ ...prev, costPerKm: event.target.value }))}
+                      placeholder="1.75"
+                    />
+                  </label>
+                  <button type="submit" className={styles.submitButton}>Save vehicle</button>
+                </form>
+              )}
             </div>
 
             <div className={styles.tipsCard}>

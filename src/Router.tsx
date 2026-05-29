@@ -6,6 +6,7 @@ import AuthPage from "./pages/AuthPage/Authpage";
 import Landing from "./pages/LandingPage/LandingPage";
 import PassengerDashboard from "./pages/PassengerDashboard/PassengerDashboard";
 import DriverDashboard from "./pages/DriverDashboard/DriverDashboard";
+import DriverVehicles from "./pages/DriverVehicles/DriverVehicles";
 
 const Router = () => {
   return (
@@ -23,6 +24,9 @@ const Router = () => {
 
         {/* Driver Dashboard */}
         <Route path="/driver-dashboard/:uuid" element={<DriverDashboard />} />
+
+        {/* Driver Vehicles */}
+        <Route path="/driver-vehicles/:uuid" element={<DriverVehicles />} />
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
