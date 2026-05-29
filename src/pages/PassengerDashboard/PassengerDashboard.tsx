@@ -1,7 +1,6 @@
-import React, { use, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./PassengerDashboard.module.css";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import API from "../../api/api";
 
 const rideOptions = [
@@ -69,7 +68,7 @@ const PassengerDashboard: React.FC = () => {
     };
 
     getUser();
-  }, []);
+  }, [uuid]);
 
   return (
     <div className={styles.page}>

@@ -405,6 +405,65 @@
   letter-spacing: 0.12em;
 }
 
+.vehicleCardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.vehicleCountBadge {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(79, 255, 176, 0.12);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.vehicleActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.secondaryButton {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.vehicleForm {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field span {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
 .summaryTitle {
   margin: 14px 0 8px;
   font-family: var(--font-display);
@@ -439,7 +498,8 @@
 @media (max-width: 760px) {
   .header,
   .cardHeader,
-  .availabilityRow {
+  .availabilityRow,
+  .vehicleCardHeader {
     flex-direction: column;
     align-items: stretch;
   }
