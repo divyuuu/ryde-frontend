@@ -29,6 +29,13 @@ type VehicleRecord = {
   costPerKm: number;
 };
 
+type VehicleApiResponse = {
+  id?: string;
+  brand?: string;
+  model?: string;
+  costPerKm?: number | string;
+};
+
 const getVehicleStorageKey = (uuid?: string) => `driverVehicles_${uuid ?? "driver"}`;
 
 const incomingRides: RideRequest[] = [
@@ -112,17 +119,39 @@ const DriverDashboard: React.FC = () => {
       }
     };
 
-    getUser();
+    const loadVehicles = async () => {
+      if (!uuid) return;
 
-    try {
-      const raw = localStorage.getItem(getVehicleStorageKey(uuid));
-      if (raw) {
-        const parsed = JSON.parse(raw) as VehicleRecord[];
-        setVehicles(Array.isArray(parsed) ? parsed : []);
+      try {
+        const response = await API.get(`/car/${uuid}`);
+        const cars = Array.isArray(response.data?.cars) ? response.data.cars : [];
+
+        setVehicles(
+          cars.map((car: VehicleApiResponse) => ({
+            id: car.id ?? "",
+            brand: car.brand ?? "",
+            model: car.model ?? "",
+            costPerKm: Number(car.costPerKm ?? 0),
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching vehicles from backend:", error);
+
+        try {
+          const raw = localStorage.getItem(getVehicleStorageKey(uuid));
+          if (raw) {
+            const parsed = JSON.parse(raw) as VehicleRecord[];
+            setVehicles(Array.isArray(parsed) ? parsed : []);
+          }
+        } catch (storageError) {
+          console.error("Error loading vehicles from storage:", storageError);
+          setVehicles([]);
+        }
       }
-    } catch (error) {
-      console.error("Error loading vehicles:", error);
-    }
+    };
+
+    getUser();
+    loadVehicles();
   }, [uuid]);
 
   const handleVehicleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -142,7 +171,7 @@ const DriverDashboard: React.FC = () => {
         brand,
         model,
         costPerKm,
-        driverId: uuid,
+        userId: uuid,
       });
 
       if (response.status >= 200 && response.status < 300) {
